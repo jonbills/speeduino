@@ -51,6 +51,7 @@ int16_t knockWindowMin; //The current minimum crank angle for a knock pulse to b
 int16_t knockWindowMax;//The current maximum crank angle for a knock pulse to be valid
 uint8_t aseTaper;
 uint8_t dfcoTaper;
+uint8_t unDFCOboostCount = 0; // JB
 uint8_t idleAdvTaper;
 uint8_t crankingEnrichTaper;
 
@@ -123,8 +124,24 @@ uint16_t correctionsFuel()
   currentStatus.launchCorrection = correctionLaunch();
   if (currentStatus.launchCorrection != 100) { sumCorrections = div100(sumCorrections * currentStatus.launchCorrection); }
 
+  bool DFCOwasOn = BIT_CHECK(currentStatus.status1, BIT_STATUS1_DFCO);
+
   bitWrite(currentStatus.status1, BIT_STATUS1_DFCO, correctionDFCO());
-  if ( BIT_CHECK(currentStatus.status1, BIT_STATUS1_DFCO) == 1 ) { sumCorrections = 0; }
+  if ( BIT_CHECK(currentStatus.status1, BIT_STATUS1_DFCO) == 1 ) 
+  { 
+    sumCorrections = 0; 
+    unDFCOboostCount = 0;
+  }
+  else if(DFCOwasOn == 1)
+  {
+    unDFCOboostCount = 5; // undfco boost for 1/2 second
+    sumCorrections *= 2;  // double pw
+  }
+  else if(unDFCOboostCount > 0) // undfco boost until decremented to 0 
+  {
+    if( BIT_CHECK(LOOP_TIMER, BIT_TIMER_10HZ) ) { unDFCOboostCount--; }
+    sumCorrections *= 2; // double pw
+  }
 
   if(sumCorrections > 1500) { sumCorrections = 1500; } //This is the maximum allowable increase during cranking
   return (uint16_t)sumCorrections;
@@ -535,7 +552,7 @@ bool correctionDFCO()
       DFCOValue = ( currentStatus.RPM > ( configPage4.dfcoRPM * 10) ) && ( currentStatus.TPS < configPage4.dfcoTPSThresh ); 
       if ( DFCOValue == false) { dfcoTaper = 0; }
     }
-    else 
+    else //dfco not on, but "should be" 
     {
       if ( (currentStatus.TPS < configPage4.dfcoTPSThresh) && (currentStatus.coolant >= (int)(configPage2.dfcoMinCLT - CALIBRATION_TEMPERATURE_OFFSET)) && ( currentStatus.RPM > (unsigned int)( (configPage4.dfcoRPM * 10) + configPage4.dfcoHyster) ) )
       {
