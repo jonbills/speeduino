@@ -1024,8 +1024,13 @@ struct config4 {
   byte unusedBits4 : 5;
   byte ANGLEFILTER_VVT;
   byte FILTER_FLEX;
+  /* temp remove for JB
   byte vvtMinClt;
   byte vvtDelay;
+  */ 
+  /* JB*/
+  byte unDFCOenrichmentAmount;
+  byte unDFCOenrichmentDuration;
 
 #if defined(CORE_AVR)
   };

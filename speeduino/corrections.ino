@@ -134,8 +134,8 @@ uint16_t correctionsFuel()
   }
   else if(DFCOwasOn == 1)
   {
-    unDFCOboostCount = 5; // undfco boost for 1/2 second
-    sumCorrections *= 2;  // double pw
+    unDFCOboostCount = configPage4.unDFCOenrichmentDuration; 
+    sumCorrections = div100(sumCorrections * configPage4.unDFCOenrichmentAmount); 
   }
   else if(unDFCOboostCount > 0) // undfco boost until decremented to 0 
   {
