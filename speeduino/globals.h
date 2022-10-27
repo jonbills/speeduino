@@ -1026,6 +1026,8 @@ struct config4 {
   byte FILTER_FLEX;
   byte vvtMinClt;
   byte vvtDelay;
+  
+
 
 #if defined(CORE_AVR)
   };
@@ -1374,9 +1376,12 @@ struct config10 {
   //Byte 189
   byte spark2InputPin : 6;
   byte spark2InputPolarity : 1;
-  byte spark2InputPullup : 1;
+  byte spark2InputPullup : 1;  
+  // JB
+  byte unDFCOenrichmentAmount;
+  byte unDFCOenrichmentDuration;
 
-  byte unused11_187_191[2]; //Bytes 187-191
+  // byte unused11_187_191[2]; //Bytes 187-191
 
 #if defined(CORE_AVR)
   };
