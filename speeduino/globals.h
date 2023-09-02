@@ -392,6 +392,8 @@
 
 #define BATTV_COR_MODE_WHOLE 0
 #define BATTV_COR_MODE_OPENTIME 1
+#define IAT_COR_MODE_WHOLE 0
+#define IAT_COR_MODE_OPENTIME 1
 
 #define INJ1_CMD_BIT      0
 #define INJ2_CMD_BIT      1
@@ -747,6 +749,8 @@ struct config2 {
   byte aeColdTaperMin; //AE cold modifier, taper start temp (full modifier, was ASE in early versions)
   byte aeMode : 2;      /**< Acceleration Enrichment mode. 0 = TPS, 1 = MAP. Values 2 and 3 reserved for potential future use (ie blended TPS / MAP) */
   byte battVCorMode : 1;
+  byte iatCorMode: 1; //JB
+  
   byte SoftLimitMode : 1;
   byte useTachoSweep : 1;
   byte aeApplyMode : 1; ///< Acceleration enrichment calc mode: 0 = Multiply | 1 = Add (AE_MODE_ADDER)

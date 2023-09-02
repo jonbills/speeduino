@@ -106,9 +106,19 @@ uint16_t correctionsFuel(void)
     if (currentStatus.batCorrection != 100) { sumCorrections = div100(sumCorrections * currentStatus.batCorrection); }  
   }
 
-  currentStatus.iatCorrection = correctionIATDensity();
-  if (currentStatus.iatCorrection != 100) { sumCorrections = div100(sumCorrections * currentStatus.iatCorrection); }
+  // JB start IATVCoreMode
 
+  currentStatus.iatCorrection = correctionIATDensity();
+  if (configPage2.iatCorMode == IAT_COR_MODE_OPENTIME)
+  {
+    inj_opentime_uS = configPage2.injOpen * currentStatus.iatCorrection;
+    currentStatus.iatCorrection = 100;
+  }
+  if (configPage2.iatCorMode == IAT_COR_MODE_WHOLE)
+  {
+    if (currentStatus.iatCorrection != 100) { sumCorrections = div100(sumCorrections * currentStatus.iatCorrection); }
+  }
+// JB end IATCorMode  
   currentStatus.baroCorrection = correctionBaro();
   if (currentStatus.baroCorrection != 100) { sumCorrections = div100(sumCorrections * currentStatus.baroCorrection); }
 
