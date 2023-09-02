@@ -109,12 +109,12 @@ uint16_t correctionsFuel(void)
   // JB start IATVCoreMode
 
   currentStatus.iatCorrection = correctionIATDensity();
-  if (configPage2.iatCorMode == IAT_COR_MODE_OPENTIME)
+  if (configPage4.iatCorMode == IAT_COR_MODE_OPENTIME)
   {
     inj_opentime_uS = configPage2.injOpen * currentStatus.iatCorrection;
     currentStatus.iatCorrection = 100;
   }
-  if (configPage2.iatCorMode == IAT_COR_MODE_WHOLE)
+  if (configPage4.iatCorMode == IAT_COR_MODE_WHOLE)
   {
     if (currentStatus.iatCorrection != 100) { sumCorrections = div100(sumCorrections * currentStatus.iatCorrection); }
   }

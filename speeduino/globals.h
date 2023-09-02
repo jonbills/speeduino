@@ -749,8 +749,6 @@ struct config2 {
   byte aeColdTaperMin; //AE cold modifier, taper start temp (full modifier, was ASE in early versions)
   byte aeMode : 2;      /**< Acceleration Enrichment mode. 0 = TPS, 1 = MAP. Values 2 and 3 reserved for potential future use (ie blended TPS / MAP) */
   byte battVCorMode : 1;
-  byte iatCorMode: 1; //JB
-  
   byte SoftLimitMode : 1;
   byte useTachoSweep : 1;
   byte aeApplyMode : 1; ///< Acceleration enrichment calc mode: 0 = Multiply | 1 = Add (AE_MODE_ADDER)
@@ -998,7 +996,8 @@ struct config4 {
   byte vvt2PWMdir : 1;
   byte inj4cylPairing : 2;
   byte dwellErrCorrect : 1;
-  byte unusedBits4 : 4;
+  byte iatCorMode : 1; //JB
+  byte unusedBits4 : 3; //JB was 4 bits, now 3 since I nicked one for iatCorMode
   byte ANGLEFILTER_VVT;
   byte FILTER_FLEX;
   byte vvtMinClt;
