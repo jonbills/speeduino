@@ -658,6 +658,15 @@ void triggerSec_missingTooth(void)
         //Next secondary filter is 25% the current gap, done here so we don't get a great big gap for the 1st tooth
         triggerSecFilterTime = curGap2 >> 2; 
         break;
+      case SEC_TRIGGER_MAZDA_3:
+        // the Miata NB 99-05 cam pattern
+        // There are two teeth seen on one revolution, two on the other.
+        secondaryToothCount++;
+        if(secondaryToothCount == 2)
+        {
+
+        }
+        break;
     }
     toothLastSecToothTime = curTime2;
   } //Trigger filter
