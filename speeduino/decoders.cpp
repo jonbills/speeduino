@@ -661,7 +661,7 @@ void triggerSec_missingTooth(void)
       case SEC_TRIGGER_MAZDA_3:
         // the Miata NB 99-05 cam pattern
         // There are two teeth seen on one revolution, one on the other.
-        // TODO, work out what the triggerSecFilterTime should be
+        
         secondaryToothCount++;
         if(secondaryToothCount == 2)
         { 
