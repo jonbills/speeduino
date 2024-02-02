@@ -571,6 +571,14 @@ void initialiseAll(void)
           channel2InjDegrees = 120;
           channel3InjDegrees = 240;
 
+          if(configPage2.injType == INJ_TYPE_PORT)
+          { 
+            //Force nSquirts to 2 for individual port injection. This prevents TunerStudio forcing the value to 3 even when this isn't wanted. 
+            currentStatus.nSquirts = 2;
+            if(configPage2.strokes == FOUR_STROKE) { CRANK_ANGLE_MAX_INJ = 360; }
+            else { CRANK_ANGLE_MAX_INJ = 180; }
+          }
+          
           //Adjust the injection angles based on the number of squirts
           if (currentStatus.nSquirts > 2)
           {
@@ -969,7 +977,7 @@ void initialiseAll(void)
     //This is ONLY the case on 4 stroke systems
     if( (currentStatus.nSquirts == 3) || (currentStatus.nSquirts == 5) )
     {
-      if(configPage2.strokes == FOUR_STROKE) { CRANK_ANGLE_MAX_INJ = 720; }
+      if(configPage2.strokes == FOUR_STROKE) { CRANK_ANGLE_MAX_INJ = (720U / currentStatus.nSquirts); }
     }
     
     switch(configPage2.injLayout)
@@ -3661,6 +3669,20 @@ void initialiseTriggers(void)
       attachInterrupt(triggerInterrupt, triggerHandler, primaryTriggerEdge);
       attachInterrupt(triggerInterrupt2, triggerSecondaryHandler, secondaryTriggerEdge);
       break;   
+
+    case DECODER_SUZUKI_K6A:
+      triggerSetup_SuzukiK6A();
+      triggerHandler = triggerPri_SuzukiK6A; // only primary, no secondary, trigger pattern is over 720 degrees
+      getRPM = getRPM_SuzukiK6A;
+      getCrankAngle = getCrankAngle_SuzukiK6A;
+      triggerSetEndTeeth = triggerSetEndTeeth_SuzukiK6A;
+
+
+      if(configPage4.TrigEdge == 0) { primaryTriggerEdge = RISING; } // Attach the crank trigger wheel interrupt (Hall sensor drags to ground when triggering)
+      else { primaryTriggerEdge = FALLING; }
+      
+      attachInterrupt(triggerInterrupt, triggerHandler, primaryTriggerEdge);
+      break;
 
 
     default:
