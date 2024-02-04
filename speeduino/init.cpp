@@ -1503,7 +1503,7 @@ void setPinMapping(byte boardID)
       pinWMIEmpty = 46;
       pinWMIIndicator = 44;
       pinWMIEnabled = 42;
-
+      #ifdef BANANA
       #if defined(CORE_TEENSY35)
         pinInjector6 = 51;
 
@@ -1555,7 +1555,8 @@ void setPinMapping(byte boardID)
         pinWMIEmpty = 34;
         pinWMIIndicator = 35;
         pinWMIEnabled = 36;
-      #elif defined(STM32F407xx)
+
+      #elif defined(STM32F407xx) /* JB */
      //Pin definitions for experimental board Tjeerd 
         //Black F407VE wiki.stm32duino.com/index.php?title=STM32F407
 
@@ -1694,6 +1695,7 @@ void setPinMapping(byte boardID)
         pinTrigger = PC13; //The CAS pin also led pin so bad idea
         pinTrigger2 = PC15; //The Cam Sensor pin
       #endif
+      #endif //banana
       break;
 
     case 6:
