@@ -295,8 +295,16 @@ void initialiseAll(void)
     
 
     //Set the pin mappings
+
+/*
+      resetConfigPages();
+      configPage4.triggerTeeth = 4; //Avoiddiv by 0 when start decoders
+      setPinMapping(3); //Force board to v0.4
+*/
+    
     if((configPage2.pinMapping == 255) || (configPage2.pinMapping == 0)) //255 = EEPROM value in a blank AVR; 0 = EEPROM value in new FRAM
     {
+    
       //First time running on this board
       resetConfigPages();
       configPage4.triggerTeeth = 4; //Avoiddiv by 0 when start decoders
