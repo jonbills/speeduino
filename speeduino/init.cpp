@@ -1357,7 +1357,7 @@ void initialiseAll(void)
     readTPS(false); // Need to read tps to detect flood clear state
 
     /* tacho sweep function. */
-    //tachoStatus.tachoSweepEnabled = (configPage2.useTachoSweep > 0);
+    currentStatus.tachoSweepEnabled = (configPage2.useTachoSweep > 0);
     /* SweepMax is stored as a byte, RPM/100. divide by 60 to convert min to sec (net 5/3).  Multiply by ignition pulses per rev.
        tachoSweepIncr is also the number of tach pulses per second */
     tachoSweepIncr = configPage2.tachoSweepMaxRPM * maxIgnOutputs * 5 / 3;
@@ -3051,6 +3051,16 @@ void setPinMapping(byte boardID)
       pinMode(pinBat, INPUT);
       pinMode(pinBaro, INPUT);
     #endif
+  #elif defined(CORE_TEENSY41)
+    //Teensy 4.1 has a weak pull down resistor that needs to be disabled for all analog pins. 
+    pinMode(pinMAP, INPUT_DISABLE);
+    pinMode(pinO2, INPUT_DISABLE);
+    pinMode(pinO2_2, INPUT_DISABLE);
+    pinMode(pinTPS, INPUT_DISABLE);
+    pinMode(pinIAT, INPUT_DISABLE);
+    pinMode(pinCLT, INPUT_DISABLE);
+    pinMode(pinBat, INPUT_DISABLE);
+    pinMode(pinBaro, INPUT_DISABLE);
   #endif
 
   //Each of the below are only set when their relevant function is enabled. This can help prevent pin conflicts that users aren't aware of with unused functions
